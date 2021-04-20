@@ -18,36 +18,66 @@ class TabTest extends React.Component {
         closeable: false
       },
       {
-        tab: 'Users',
-        component: <ListUserComponent />,
+        tab: 'Roles',
+        component: <ListRoleComponent />,
         id: 1,
         closeable: true
       },
       {
-        tab: 'Item detail 2',
-        component: <div>Item details for 2</div>,
+        tab: 'Users',
+        component: <ListUserComponent />,
         id: 2,
         closeable: true
       },
       {
-        tab: 'Item detail 3',
-        component: <div>Item details for 3</div>,
+        tab: 'Reports',
+        component: <ListReportComponent />,
         id: 3,
         closeable: true
       }
     ],
-    activeIndex: 0
+    activeIndex: 3
   };
 
-  addItem = () => {
+  addItem = (name) => {
+    if (name === 'Users') {
+      var __FOUND = this.state.data.find(function(tab, index) {
+      	if(tab.tab == 'Users')
+      		return true;
+      });
+      if (__FOUND) {
+        return;
+      }
+    }
+
+    if (name === 'Roles') {
+      var __FOUND = this.state.data.find(function(tab, index) {
+        if(tab.tab == 'Roles')
+          return true;
+      });
+      if (__FOUND) {
+        return;
+      }
+    }
+
     const id = new Date().valueOf();
     this.setState({
       data: this.state.data.concat({
-        tab: 'New item ' + id,
-        component: (
-          <div>
-            Your new component data for {id.toString().substring(6, 10)}
-          </div>
+        tab: name,
+        component: name === 'Reports' ? (
+          <ListReportComponent />
+        ) : (
+          name === 'Users' ? (
+            <ListUserComponent />
+          ) : (
+            name === 'Roles' ? (
+              <ListRoleComponent />
+            ) : (
+              <div>
+                Your new component data for {id.toString().substring(6, 10)}
+              </div>
+            )
+          )
         ),
         id: id,
         closeable: true
@@ -59,9 +89,9 @@ class TabTest extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.addItem}>Users</Button>
-        <Button onClick={this.addItem}>Roles</Button>
-        <Button onClick={this.addItem}>Reports</Button>
+        <Button onClick={() => this.addItem('Users')}>Users</Button>
+        <Button onClick={() => this.addItem('Roles')}>Roles</Button>
+        <Button onClick={() => this.addItem('Reports')}>Reports</Button>
         <CloseableTabs
           tabPanelColor='#dee2e6'
           data={this.state.data}
