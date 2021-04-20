@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 import UserService from '../../services/user.service'
 import RoleService from '../../services/role.service';
 import ReactDOM from 'react-dom';
@@ -12,7 +13,7 @@ class ListUserRoleComponent extends Component {
         super(props)
 
         this.state = {
-            userid: this.props.match.params.id,
+            userid: this.props.id,
             userRoles: [],
             allRoles: []
         }
@@ -63,19 +64,18 @@ class ListUserRoleComponent extends Component {
       });
     }
 
-    updateUserRoles(){
+    updateUserRoles() {
       let user = this.state.user;
       user.roles = this.state.userRoles;
       delete user.password
       console.log('user => ' + JSON.stringify(user));
 
       UserService.updateUser(user, this.state.id).then(res =>{
-          this.props.history.push('/users');
+        toast.success(res.data.message);
+        this.props.close();
+      }).catch(function (error) {
+        toast.error(error.response.data.message);
       });
-
-      // UserService.updateUser(this.state.userid, roleid).then( res => {
-      //     this.setState({userRoles: this.state.userRoles.filter(userRole => userRole.id !== res.data)});
-      // });
     }
 
 
@@ -108,24 +108,28 @@ class ListUserRoleComponent extends Component {
     };
 
     render() {
-        return (
-            <div className="container">
-                 <h2 className="text-center">User {this.state.userid} Roles List</h2>
-                 <Transfer style={{height: '300px'}}
-                   dataSource={this.state.allRoles}
-                   showSearch
-                   filterOption={this.filterOption}
-                   targetKeys={this.state.userRoles}
-                   onChange={this.handleChange}
-                   onSearch={this.handleSearch}
-                   render={item => item.title}
-                 />
-                 <button style={{marginLeft: "10px"}} onClick={ () => this.updateUserRoles()} className="btn btn-primary">Apply</button>
-                 <div className = "card col-md-6 offset-md-3">
-                   <a href="/users">back</a>
-                 </div>
-            </div>
-        )
+      return (
+        <>
+          <Transfer style={{height: '300px'}}
+            dataSource={this.state.allRoles}
+            showSearch
+            filterOption={this.filterOption}
+            targetKeys={this.state.userRoles}
+            onChange={this.handleChange}
+            onSearch={this.handleSearch}
+            render={item => item.title}
+          />
+          <center>
+            <button
+              className="btn btn-primary"
+              style={{width: 'fit-content'}}
+              onClick={ () => this.updateUserRoles()}
+            >
+              Apply
+            </button>
+          </center>
+        </>
+      )
     }
 }
 

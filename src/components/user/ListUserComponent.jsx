@@ -1,18 +1,55 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Modal } from 'antd';
+
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import UserService from "../../services/user.service";
 
-class ListUserComponent extends Component {
-    constructor(props) {
-        super(props)
+import CreateUserComponent from './CreateUserComponent';
+import ViewUserComponent from './ViewUserComponent';
+import UpdateUserPasswordComponent from './UpdateUserPasswordComponent';
+import ListUserRoleComponent from '../userrole/ListUserRoleComponent';
 
-        this.state = {
-                users: []
-        }
-        this.addUser = this.addUser.bind(this);
-        this.editUser = this.editUser.bind(this);
-        this.deleteUser = this.deleteUser.bind(this);
+class ListUserComponent extends Component {
+    UserModalEnum = {
+        CREATE: "Create",
+        UPDATE: "Update",
+        VIEW: "View",
+        PASSWORD: "Password for",
+        ROLE: "Role of",
+    }
+
+    constructor(props) {
+      super(props)
+
+      this.state = {
+          users: [],
+          isModalVisible: false,
+          modalCompType: null,
+          id2update: null,
+          id2view: null,
+          id2password: null,
+          id2role: null,
+          fetch: true
+      }
+      this.addUser = this.addUser.bind(this);
+      this.editUser = this.editUser.bind(this);
+      this.deleteUser = this.deleteUser.bind(this);
+      this.hideModal = this.hideModal.bind(this);
+    }
+
+    componentDidMount() {
+      UserService.getAllUsers().then((res) => {
+        this.setState({ users: res.data, fetch: false});
+      });
+    }
+
+    componentDidUpdate() {
+      if (this.state.fetch) {
+        UserService.getAllUsers().then((res) => {
+          this.setState({ users: res.data, fetch: false});
+        });
+      }
     }
 
     deleteUser (id) {
@@ -41,47 +78,76 @@ class ListUserComponent extends Component {
             });
         }
     }
-    viewUser(id){
-        this.props.history.push(`/view-user/${id}`);
+
+    viewUser(id) {
+      this.setState({
+        isModalVisible: true,
+        modalCompType: this.UserModalEnum.VIEW,
+        id2view: id
+      });
     }
-    editUser(id){
-        this.props.history.push(`/add-user/${id}`);
+
+    editUser(id) {
+      this.setState({
+        isModalVisible: true,
+        modalCompType: this.UserModalEnum.UPDATE,
+        id2update: id
+      });
     }
-    editUserPassword(id){
-        confirmAlert({
-          title: 'Confirm to change Password',
-          message: 'Are you sure you want to change password?',
-          buttons: [
-            {
-              label: 'Confirm',
-              onClick: () => {
-                  this.props.history.push(`/user-password/${id}`);
-              }
-            },
-            {
-              label: 'Abort',
-              onClick: () => {}
-            }
-          ]
+
+    editUserPassword(id) {
+        // confirmAlert({
+        //   title: 'Confirm to change Password',
+        //   message: 'Are you sure you want to change password?',
+        //   buttons: [
+        //     {
+        //       label: 'Confirm',
+        //       onClick: () => {
+                this.setState({
+                  isModalVisible: true,
+                  modalCompType: this.UserModalEnum.PASSWORD,
+                  id2password: id
+                });
+        //       }
+        //     },
+        //     {
+        //       label: 'Abort',
+        //       onClick: () => {}
+        //     }
+        //   ]
+        // });
+    }
+
+    veiwUserRole(id) {
+      this.setState({
+        isModalVisible: true,
+        modalCompType: this.UserModalEnum.ROLE,
+        id2role: id
+      });
+    }
+
+    addUser() {
+        this.setState({
+          isModalVisible: true,
+          modalCompType: this.UserModalEnum.CREATE
         });
-
-    }
-    veiwUserRole(id){
-        this.props.history.push(`/view-user-role/${id}`);
     }
 
-    componentDidMount(){
-        UserService.getAllUsers().then((res) => {
-            this.setState({ users: res.data});
-        });
-    }
-
-    addUser(){
-        this.props.history.push('/add-user/_add');
-    }
+    hideModal = () => {
+      this.setState({
+        isModalVisible: false,
+        modalCompType: null,
+        id2update: null,
+        id2view: null,
+        id2password: null,
+        id2role: null,
+        fetch: true
+      });
+    };
 
     render() {
         return (
+          <>
             <div className="container">
                  <h2 className="text-center">Users List</h2>
                  <div className = "row">
@@ -122,6 +188,36 @@ class ListUserComponent extends Component {
                  </div>
 
             </div>
+
+            <Modal visible={this.state.isModalVisible} id='Modal'
+                onOk={this.hideModal}
+                onCancel={this.hideModal}
+                footer={null}
+                title={null}
+                keyboard
+                maskClosable
+                destroyOnClose
+            >
+              <div className="card">
+                <center><h3> {this.state.modalCompType + " User"} </h3></center>
+                {this.state.modalCompType === this.UserModalEnum.CREATE &&
+                  <CreateUserComponent id="_add" close={this.hideModal} />
+                }
+                {this.state.modalCompType === this.UserModalEnum.UPDATE &&
+                  <CreateUserComponent id={this.state.id2update} close={this.hideModal} />
+                }
+                {this.state.modalCompType === this.UserModalEnum.VIEW &&
+                  <ViewUserComponent id={this.state.id2view} close={this.hideModal} />
+                }
+                {this.state.modalCompType === this.UserModalEnum.PASSWORD &&
+                  <UpdateUserPasswordComponent id={this.state.id2password} close={this.hideModal} />
+                }
+                {this.state.modalCompType === this.UserModalEnum.ROLE &&
+                  <ListUserRoleComponent id={this.state.id2role} close={this.hideModal} />
+                }
+              </div>
+            </Modal>
+          </>
         )
     }
 }
