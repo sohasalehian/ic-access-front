@@ -21,7 +21,7 @@ label {
   height: 100%;
 }
 .main-content-div {
-  height: 100%;
+  height: 95%;
 }
 .container {
   height: calc(100% - 10px);
@@ -93,7 +93,7 @@ label {
 
 .main-tree-container {
   display: flex;
-  height: 350px;
+  height: 330px;
   width: 100%;
   flex-direction: row;
   justify-content: center;
@@ -103,8 +103,13 @@ label {
   border: solid 1px #bbb;
   height: 100%;
   width: 25%;
-  overflow-y: scroll;
-  overflow-x: auto;
+  // overflow: visible;
+
+  .ant-tree {
+    height: 88%;
+    overflow-y: scroll;
+    overflow-x: auto;
+  }
 }
 .devider {
   border: solid 1px #333;
