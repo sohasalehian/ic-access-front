@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import '../index.css';
 import CloseableTabs from 'react-closeable-tabs';
@@ -10,40 +10,38 @@ import ListUserComponent from './user/ListUserComponent';
 import ListRoleComponent from './role/ListRoleComponent';
 import ListReportComponent from "./report/ListReportComponent";
 
-class Home extends React.Component {
-  state = {
-    data: [
-      {
-        tab: 'Home',
-        component: <Profile />,
-        id: 0,
-        closeable: false
-      // },
-      // {
-      //   tab: 'Roles',
-      //   component: <ListRoleComponent />,
-      //   id: 1,
-      //   closeable: true
-      // },
-      // {
-      //   tab: 'Users',
-      //   component: <ListUserComponent />,
-      //   id: 2,
-      //   closeable: true
-      // },
-      // {
-      //   tab: 'Reports',
-      //   component: <ListReportComponent />,
-      //   id: 3,
-      //   closeable: true
-      }
-    ],
-    activeIndex: 0
-  };
+function Home(props) {
+  const [data, setData] = useState([
+    {
+      tab: 'Home',
+      component: <Profile />,
+      id: 0,
+      closeable: false
+    // },
+    // {
+    //   tab: 'Roles',
+    //   component: <ListRoleComponent />,
+    //   id: 1,
+    //   closeable: true
+    // },
+    // {
+    //   tab: 'Users',
+    //   component: <ListUserComponent />,
+    //   id: 2,
+    //   closeable: true
+    // },
+    // {
+    //   tab: 'Reports',
+    //   component: <ListReportComponent />,
+    //   id: 3,
+    //   closeable: true
+    }
+  ]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  addItem = (name) => {
+  const addItem = (name) => {
     if (name === 'Users') {
-      var __FOUND = this.state.data.find(function(tab, index) {
+      var __FOUND = data.find(function(tab, index) {
       	if(tab.tab == 'Users')
       		return true;
       });
@@ -53,7 +51,7 @@ class Home extends React.Component {
     }
 
     if (name === 'Roles') {
-      var __FOUND = this.state.data.find(function(tab, index) {
+      var __FOUND = data.find(function(tab, index) {
         if(tab.tab == 'Roles')
           return true;
       });
@@ -63,54 +61,52 @@ class Home extends React.Component {
     }
 
     const id = new Date().valueOf();
-    this.setState({
-      data: this.state.data.concat({
-        tab: name,
-        component: name === 'Reports' ? (
-          <ListReportComponent />
+    var prevData = data;
+    prevData.concat({
+      tab: name,
+      component: name === 'Reports' ? (
+        <ListReportComponent />
+      ) : (
+        name === 'Users' ? (
+          <ListUserComponent />
         ) : (
-          name === 'Users' ? (
-            <ListUserComponent />
+          name === 'Roles' ? (
+            <ListRoleComponent />
           ) : (
-            name === 'Roles' ? (
-              <ListRoleComponent />
-            ) : (
-              <div>
-                Your new component data for {id.toString().substring(6, 10)}
-              </div>
-            )
+            <div>
+              Your new component data for {id.toString().substring(6, 10)}
+            </div>
           )
-        ),
-        id: id,
-        closeable: true
-      }),
-      activeIndex: this.state.data.length
+        )
+      ),
+      id: id,
+      closeable: true
     });
+    setData(prevData);
+    setActiveIndex(data.length);
   };
 
-  render() {
-    return (
-      <div>
-        <Button className="tab-opener" style={{left: '220px'}}
-          onClick={() => this.addItem('Users')}>Users</Button>
-        <Button className="tab-opener" style={{left: '300px'}}
-          onClick={() => this.addItem('Roles')}>Roles</Button>
-        <Button className="tab-opener" style={{left: '380px'}}
-          onClick={() => this.addItem('Reports')}>Reports</Button>
-        <CloseableTabs
-          tabPanelColor='#dee2e6'
-          data={this.state.data}
-          onCloseTab={(id, newIndex) => {
-            this.setState({
-              data: this.state.data.filter(item => item.id !== id),
-              activeIndex: 0
-            });
-          }}
-          activeIndex={this.state.activeIndex}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Button className="tab-opener" style={{left: '220px'}}
+        onClick={() => addItem('Users')}>Users</Button>
+      <Button className="tab-opener" style={{left: '300px'}}
+        onClick={() => addItem('Roles')}>Roles</Button>
+      <Button className="tab-opener" style={{left: '380px'}}
+        onClick={() => addItem('Reports')}>Reports</Button>
+      <CloseableTabs
+        tabPanelColor='#dee2e6'
+        data={data}
+        onCloseTab={(id, newIndex) => {
+          var prevData = data;
+          prevData.filter(item => item.id !== id);
+          setData(prevData);
+          setActiveIndex(0);
+        }}
+        activeIndex={activeIndex}
+      />
+    </div>
+  );
 }
 
 export default Home;
