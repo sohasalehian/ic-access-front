@@ -1,41 +1,29 @@
-import React, { Component } from 'react'
-import RoleService from '../../services/role.service';
+import React, {useState, useEffect} from 'react'
+import RoleService from "../../services/role.service";
 
-class ViewRoleComponent extends Component {
-    constructor(props) {
-        super(props)
+function ViewRoleComponent(props) {
+  const [id] = useState(props.id);
+  const [role, setRole] = useState({});
 
-        this.state = {
-            id: this.props.match.params.id,
-            role: {}
-        }
-    }
+  useEffect(() => {
+      RoleService.getRoleById(id).then( res => {
+          setRole(res.data);
+      })
+  });
 
-    componentDidMount(){
-        RoleService.getRoleById(this.state.id).then( res => {
-            this.setState({role: res.data});
-        })
-    }
-
-    render() {
-        return (
-            <div className="container">
-                <br></br>
-                <div className = "card col-md-6 offset-md-3">
-                    <h3 className = "text-center">View Role Details</h3>
-                    <div className = "card-body">
-                        <div className = "row">
-                            <label>Role Name:</label>
-                            <label>{this.state.role.name}</label>
-                        </div>
-                    </div>
-                </div>
-                <div className = "card col-md-6 offset-md-3">
-                  <a href="/roles">back</a>
-                </div>
-            </div>
-        )
-    }
+  return (
+    <>
+      <table className = "table table-striped table-bordered">
+        <tr>
+          <td><b>Name</b></td>
+          <td>{role.name}</td>
+        </tr>
+        <tr>
+          <td><b>ID</b></td>
+          <td>{role.id}</td>
+        </tr>
+      </table>
+    </>
+  );
 }
-
-export default ViewRoleComponent
+export default ViewRoleComponent;
