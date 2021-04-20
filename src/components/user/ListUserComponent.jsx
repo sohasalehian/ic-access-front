@@ -189,7 +189,8 @@ class ListUserComponent extends Component {
 
             </div>
 
-            <Modal visible={this.state.isModalVisible} id='Modal'
+            <Modal visible={this.state.isModalVisible}
+                id='Modal'
                 onOk={this.hideModal}
                 onCancel={this.hideModal}
                 footer={null}

@@ -14,7 +14,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardAdmin from "./components/BoardAdmin";
-import TabTest from "./components/TabTest";
+import TreeTest from "./components/TreeTest";
 
 import ListUserComponent from './components/user/ListUserComponent';
 import CreateUserComponent from './components/user/CreateUserComponent';
@@ -103,10 +103,12 @@ const App = ({ t }) => {
                 changeLanguage('fa');
               }
             }} />
-
           <Link to={"/"} className="navbar-brand">
             {t('app title')}
           </Link>
+
+          {/*
+
           <div className="navbar-nav mr-auto">
 
             <li className="nav-item">
@@ -140,6 +142,7 @@ const App = ({ t }) => {
               </li>
             )}
           </div>
+          */}
 
           {currentUser ?
             (
@@ -151,7 +154,7 @@ const App = ({ t }) => {
                 </li>
                 <li className="nav-item">
                   <a href="/login" className="nav-link" onClick={logOut}>
-                    {t('logOut')}
+                    {t('LogOut')}
                   </a>
                 </li>
               </div>
@@ -159,7 +162,7 @@ const App = ({ t }) => {
               <div className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <Link to={"/login"} className="nav-link">
-                    {t('login')}
+                    {t('Login')}
                   </Link>
                 </li>
               </div>
@@ -191,7 +194,7 @@ const App = ({ t }) => {
             <Route path="/admin" component={BoardAdmin} />
 
             <Route path = "/users" component = {ListUserComponent}></Route>
-            <Route path = "/test/add-user/:id" component = {CreateUserComponent}></Route>
+            <Route path = "/add-user/:id" component = {CreateUserComponent}></Route>
             <Route path = "/user-password/:id" component = {UpdateUserPasswordComponent}></Route>
             <Route path = "/view-user-role/:id" component = {ListUserRoleComponent}></Route>
             <Route path = "/view-user/:id" component = {ViewUserComponent}></Route>
@@ -204,7 +207,7 @@ const App = ({ t }) => {
 
             <Route path="/reports" component={ListReportComponent} />
 
-            <Route path="/test" component={TabTest} />
+            <Route path="/test" component={TreeTest} />
           </Switch>
         </div>
       </div>

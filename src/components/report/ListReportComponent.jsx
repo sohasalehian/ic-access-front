@@ -79,6 +79,12 @@ class ListReportComponent extends React.Component {
     });
   };
 
+  hideModal = () => {
+    this.setState({
+      isModalVisible: false
+    });
+  };
+
   render() {
 
     const onRightClick = (info) => {
@@ -94,7 +100,6 @@ class ListReportComponent extends React.Component {
     };
 
     const onSelect = (key, info) => {
-      this.props.history.push(info.node.link);
       this.setState({selectedKeys: [info.node.key]});
     };
 
@@ -242,7 +247,7 @@ class ListReportComponent extends React.Component {
     var form = '';
 
     return (
-      <div className="container">
+      <>
         <div className='main-tree-container'>
           <div className='tree-container'>
           <Input style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
@@ -267,8 +272,16 @@ class ListReportComponent extends React.Component {
           </div>
 
         </div>
-        <Modal visible={this.state.isModalVisible} id='Modal' footer={null}
-        title={this.state.doAdd ? 'Add ' : ('Edit ' + (this.state.chosenNode.isLeaf ? 'Report' : 'Category'))}>
+        <Modal visible={this.state.isModalVisible}
+            id='Modal'
+            footer={null}
+            title={this.state.doAdd ? 'Add ' : ('Edit ' + (this.state.chosenNode.isLeaf ? 'Report' : 'Category'))}
+            onOk={this.hideModal}
+            onCancel={this.hideModal}
+            keyboard
+            maskClosable
+            destroyOnClose
+        >
           <AvForm onValidSubmit={handleOk} ref={c => (this.form = c)}>
             <AvGroup>
                 <AvField
@@ -330,8 +343,7 @@ class ListReportComponent extends React.Component {
               <FontAwesomeIcon icon="trash" />
             </Button>
         </div>
-
-      </div>
+      </>
     );
   }
 }
