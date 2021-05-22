@@ -62,20 +62,6 @@ const RechartsLineChart = () => {
       setSites(res.data);
       setSelectedSite(res.data[0]);
 
-      var menuItsms;
-      for (const site of res.data) {
-          menuItsms += (
-            <Menu.Item key={"ID-" + site}>
-              {site}
-            </Menu.Item>
-          );
-      }
-      var menu = (
-        <Menu>
-          {menuItsms}
-        </Menu>
-      );
-      setMenu(menu);
     });
   }, []);
 
