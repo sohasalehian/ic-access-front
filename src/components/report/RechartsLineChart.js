@@ -61,7 +61,6 @@ const RechartsLineChart = () => {
       console.log(res.data);
       setSites(res.data);
       setSelectedSite(res.data[0]);
-
     });
   }, []);
 
