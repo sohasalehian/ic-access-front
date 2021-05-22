@@ -93,7 +93,7 @@ label {
 
 .main-tree-container {
   display: flex;
-  height: 330px;
+  height: 370px;
   width: 100%;
   flex-direction: row;
   justify-content: center;
@@ -117,6 +117,7 @@ label {
   width: 2px;
 }
 .details-container {
+  padding: 1%;
   border: solid 1px #bbb;
   height: 100%;
   width: 75%;

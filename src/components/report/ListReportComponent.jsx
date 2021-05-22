@@ -11,6 +11,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ChartTest from './ChartTest';
+import RechartsLineChart from './RechartsLineChart';
 
 const { DirectoryTree } = Tree;
 
@@ -101,6 +103,7 @@ class ListReportComponent extends React.Component {
 
     const onSelect = (key, info) => {
       this.setState({selectedKeys: [info.node.key]});
+      console.log(info.node.key);
     };
 
     const filterTreeNode = (node) => {
@@ -243,6 +246,21 @@ class ListReportComponent extends React.Component {
       this.form && this.form.reset();
     };
 
+    const isChartTest = () => {
+      const id = parseInt(this.state.selectedKeys[0].replace('user','').replace('report',''));
+      console.log(id);
+      if (!id) {
+        return false;
+      }
+
+      console.log(id % 2);
+      if (id % 2 === 0) {
+        return false;
+      }
+
+      return true;
+    }
+
     const isInvalid = false;
     var form = '';
 
@@ -250,7 +268,7 @@ class ListReportComponent extends React.Component {
       <>
         <div className='main-tree-container'>
           <div className='tree-container'>
-          <Input style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
+            <Input style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
 
             <DirectoryTree
               multiple
@@ -268,10 +286,19 @@ class ListReportComponent extends React.Component {
 
           <div className='devider'>
           </div>
+
           <div className='details-container'>
+            {isChartTest() ?
+              <ChartTest />
+            :
+              <RechartsLineChart />
+            }
           </div>
 
         </div>
+
+
+
         <Modal visible={this.state.isModalVisible}
             id='Modal'
             footer={null}
@@ -343,6 +370,7 @@ class ListReportComponent extends React.Component {
               <FontAwesomeIcon icon="trash" />
             </Button>
         </div>
+
       </>
     );
   }

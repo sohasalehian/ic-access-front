@@ -30,15 +30,15 @@ class Home extends React.Component {
       //   component: <ListUserComponent />,
       //   id: 2,
       //   closeable: true
-      // },
-      // {
-      //   tab: 'Reports',
-      //   component: <ListReportComponent />,
-      //   id: 3,
-      //   closeable: true
+      },
+      {
+        tab: 'Reports',
+        component: <ListReportComponent />,
+        id: 1,
+        closeable: true
       }
     ],
-    activeIndex: 0
+    activeIndex: 1
   };
 
   addItem = (name) => {
@@ -103,7 +103,7 @@ class Home extends React.Component {
           onCloseTab={(id, newIndex) => {
             this.setState({
               data: this.state.data.filter(item => item.id !== id),
-              activeIndex: 0
+              activeIndex: this.state.activeIndex - 1
             });
           }}
           activeIndex={this.state.activeIndex}
