@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ChartTest from './ChartTest';
 import RechartsLineChart from './RechartsLineChart';
+import ChartConfig from './ChartConfig';
+import ToggleButton from 'react-toggle-button';
 
 const { DirectoryTree } = Tree;
 
@@ -41,26 +43,30 @@ class ListReportComponent extends React.Component {
 
   fetchData () {
     ReportService.getAllReports().then((res) => {
-        const withRoot = [
-          {
-            title: 'Root',
-            key: 'root',
-            children: res.data.children
-          }
+        const rootNode = {
+          title: 'Root',
+          key: 'root',
+          children: res.data.children
+        }
+        const treeData = [
+          rootNode
         ];
         var root = res.data;
         root.key = 'root';
         var allKeys = this.getChildrenKeys(res.data);
 
-        console.log(allKeys);
-
-        this.setState({ treeData: withRoot, allKeys});
+        this.setState({
+          treeData,
+          allKeys,
+          selectedNode: rootNode
+        });
     });
   }
 
   state = {
     searchValue: '',
     selectedKeys: ['root'],
+    selectedNode: {},
     expandedKeys: ['root'],
     treeData: [],
     menuOpen: false,
@@ -70,7 +76,9 @@ class ListReportComponent extends React.Component {
       name: '',
       link: '',
     },
-    reload: false
+    reload: false,
+    showConfig: false,
+    // selectedSite: "E0016L"
   };
 
   onChange = e => {
@@ -87,10 +95,14 @@ class ListReportComponent extends React.Component {
     });
   };
 
+  setSelectedSite = (selectedSite) => {
+    console.log("============" + selectedSite);
+    this.setState({selectedSite: selectedSite});
+  };
+
   render() {
 
     const onRightClick = (info) => {
-      console.log(info.node);
       info.node.selected = true;
       this.setState({
         menuOpen: true,
@@ -102,8 +114,10 @@ class ListReportComponent extends React.Component {
     };
 
     const onSelect = (key, info) => {
-      this.setState({selectedKeys: [info.node.key]});
-      console.log(info.node.key);
+      this.setState({
+        selectedKeys: [info.node.key],
+        selectedNode:info.node
+      });
     };
 
     const filterTreeNode = (node) => {
@@ -248,17 +262,19 @@ class ListReportComponent extends React.Component {
 
     const isChartTest = () => {
       const id = parseInt(this.state.selectedKeys[0].replace('user','').replace('report',''));
-      console.log(id);
       if (!id) {
         return false;
       }
 
-      console.log(id % 2);
       if (id % 2 === 0) {
         return false;
       }
 
       return true;
+    }
+
+    const isLeafSelected = () => {
+      return this.state.selectedNode.isLeaf;
     }
 
     const isInvalid = false;
@@ -267,31 +283,70 @@ class ListReportComponent extends React.Component {
     return (
       <>
         <div className='main-tree-container'>
-          <div className='tree-container'>
-            <Input style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
+          <div className='left-panel'>
+            <div className={'config-tree-toggle ' + (this.state.showConfig ? 'light' : 'dark')}
+              style={isLeafSelected() ? {} : {pointerEvents: "none", opacity: "0.4"}}>
+              <ToggleButton disabled={true}
+                inactiveLabel={<><FontAwesomeIcon icon="folder" />/<FontAwesomeIcon icon="folder-open" /></>}
+                activeLabel={<><FontAwesomeIcon icon="chart-bar" />/<FontAwesomeIcon icon="cogs" /></>}
+                activeLabelStyle={{color: '#414244'}}
+                colors={{
+                  activeThumb: {
+                    base: 'rgb(62,130,247)',
+                    hover: 'rgb(52,120,237)'
+                  },
+                  inactiveThumb: {
+                    base: 'rgb(62,130,247)',
+                    hover: 'rgb(52,120,237)'
+                  },
+                  active: {
+                    base: '#b3b3b3',
+                  },
+                  inactive: {
+                    base: 'rgb(65,66,68)',
+                  }
+                }}
+                thumbAnimateRange={[-10, 36]}
+                thumbStyle={{left: '0 !important'}}
+                value={this.state.showConfig}
+                onToggle={(value) => {
+                  const prev = this.state.showConfig;
+                  this.setState({
+                    showConfig: !prev
+                  });
+                }} />
+            </div>
 
-            <DirectoryTree
-              multiple
-              defaultExpandAll
-              onRightClick={onRightClick}
-              onSelect={onSelect}
-              onExpand={onExpand}
-              treeData={this.state.treeData}
-              filterTreeNode={filterTreeNode}
-              selectedKeys={this.state.selectedKeys}
-              autoExpandParent={true}
-              expandedKeys={this.state.expandedKeys}
-            />
-          </div>
-
-          <div className='devider'>
-          </div>
-
-          <div className='details-container'>
-            {isChartTest() ?
-              <ChartTest />
+            {(isLeafSelected() && this.state.showConfig) ?
+              <ChartConfig setSelectedSite={this.setSelectedSite} selectedSite={this.state.selectedNode.link}/>
             :
-              <RechartsLineChart />
+              <div className='tree-container'>
+                <Input placeholder="Search" onChange={this.onChange} />
+
+                <DirectoryTree
+                  multiple
+                  defaultExpandAll
+                  onRightClick={onRightClick}
+                  onSelect={onSelect}
+                  onExpand={onExpand}
+                  treeData={this.state.treeData}
+                  filterTreeNode={filterTreeNode}
+                  selectedKeys={this.state.selectedKeys}
+                  autoExpandParent={true}
+                  expandedKeys={this.state.expandedKeys}
+                />
+              </div>
+            }
+          </div>
+          <div className='right-panel'>
+            {isLeafSelected() ?
+              (isChartTest() ?
+                <ChartTest />
+              :
+                <RechartsLineChart selectedSite={this.state.selectedSite} />
+              )
+            :
+              <p>No Content</p>
             }
           </div>
 

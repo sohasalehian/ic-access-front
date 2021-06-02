@@ -90,7 +90,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="tab-container">
         <Button className="tab-opener" style={{left: '220px'}}
           onClick={() => this.addItem('Users')}>Users</Button>
         <Button className="tab-opener" style={{left: '300px'}}

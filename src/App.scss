@@ -1,3 +1,24 @@
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #dfe2e6;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3.5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #414244;
+}
+
 
 label {
   display: block;
@@ -89,40 +110,67 @@ label {
     background: #4b91ff !important;
   }
 
-
+.tab-container {
+  height: 100%;
+}
+.sc-bdVaJa {
+  height: 100%;
+}
+.sc-bwzfXH {
+  height: calc(100% - 30px);
+}
 
 .main-tree-container {
   display: flex;
-  height: 370px;
   width: 100%;
+  height: 100%;
   flex-direction: row;
   justify-content: center;
-}
 
-.tree-container {
-  border: solid 1px #bbb;
-  height: 100%;
-  width: 25%;
-  // overflow: visible;
+  .left-panel{
+    border: solid 1px #dfe2e6;
+    // border-right: 2px solid #414244;
+    height: 100%;
+    width: 23%;
 
-  .ant-tree {
-    height: 88%;
-    overflow-y: scroll;
-    overflow-x: auto;
+    .config-tree-toggle {
+      display: flex;
+      justify-content: center;
+      height: 22px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .light {
+      background: #b3b3b3;
+    }
+    .dark {
+      background: #414244;
+    }
+
+    .tree-container {
+      background: #dfe2e6;
+      height: calc(100% - 22px);
+
+
+      .ant-tree {
+        height: calc(100% - 42px);
+        overflow-y: scroll;
+        overflow-x: auto;
+        margin: 5px 0 5px 5px;
+      }
+    }
+  }
+
+  .right-panel {
+    padding: 1%;
+    border: solid 1px #dfe2e6;
+    height: 100%;
+    width: 77%;
+    overflow: auto;
   }
 }
-.devider {
-  border: solid 1px #333;
-  height: 100%;
-  width: 2px;
-}
-.details-container {
-  padding: 1%;
-  border: solid 1px #bbb;
-  height: 100%;
-  width: 75%;
-  overflow: auto;
-}
+
 .tree-menu {
   position: fixed;
   display: flex;
@@ -164,9 +212,24 @@ label {
 
 .tab-opener {
   background: #353a40;
-    border: transparent;
-    border-radius: unset;
-    position: absolute;
-    top: 13px;
-    width: 80px;
+  border: transparent;
+  border-radius: unset;
+  position: absolute;
+  top: 13px;
+  width: 80px;
+}
+
+.site-dropdown {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  border: 1px solid rgb(62, 130, 247);
+  border-radius: 1px;
+  width: 150px;
+  text-align: center;
+  background-color: #dee2e6;
+}
+
+.recharts-surface {
+  overflow: visible !important;
 }

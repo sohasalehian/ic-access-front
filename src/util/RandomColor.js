@@ -12,13 +12,13 @@ const generateRandomColors = (total) => {
 };
 
 const getRandomColors = (total) => {
-  const TotalNumberOfColors = 12;
+  const TotalNumberOfColors = total + 2;
   var arr = [];
   while(arr.length < total){
       var r = Math.floor(Math.random() * TotalNumberOfColors);
       if(arr.indexOf(r) === -1) arr.push(r);
   }
-  console.log(arr);
+  // console.log(arr);
   var r = [];
   for (var x = 0; x < total; x++) {
       r.push(randomColors(TotalNumberOfColors)[arr[x]]);
