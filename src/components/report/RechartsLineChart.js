@@ -1,15 +1,22 @@
-import React, { useState, useEffect, useLayoutEffect, PureComponent } from "react";
+import React, { useState, useEffect, useLayoutEffect, PureComponent, useReducer } from "react";
 import { Label, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import DataService from "../../services/data.service";
 import RandomColor from "../../util/RandomColor";
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import { Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const RechartsLineChart = (props) => {
   const [kpis, setKpis] = useState([]);
   const [xTickInterval, setXTickInterval] = useState(0);
   const [colors, setColors] = useState([]);
   const [data, setData] = useState([]);
+
+  const [showDot, toggleShowDot] = useReducer((showDot) => !showDot, false);
+  // const [contextMenuOpen, setContextMenuOpen] = useState(false);
+  // const [contextMenuX, setContextMenuX] = useState(0);
+  // const [contextMenuY, setContextMenuY] = useState(0);
 
   function updateXTickCount() {
     // console.log("data -> " + JSON.stringify(data));
@@ -39,6 +46,14 @@ const RechartsLineChart = (props) => {
     });
   }, [props.selectedSite]);
 
+  const onRightClick = (info) => {
+    // console.log(info);
+    toggleShowDot();
+    // setContextMenuOpen(true);
+    // setContextMenuX(info.event.screenX);
+    // setContextMenuY(info.event.screenY - 70);
+  }
+
   return (
     <>
       <ResponsiveContainer width="100%" height="70%">
@@ -51,8 +66,9 @@ const RechartsLineChart = (props) => {
             bottom: 5,
           }}
           style={{marginTop: '20px'}}
+          onClick={onRightClick}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" onClick={onRightClick} />
 
           <XAxis
             dataKey="date"
@@ -82,13 +98,43 @@ const RechartsLineChart = (props) => {
             yAxisId="left2"
             domain={['dataMin', 'dataMax']} stroke={colors[3]}
             label={{ value: kpis[3], position: "inside", angle: -90, dx: -33, fontSize: 10, fill: colors[3]}} />
+
           <Tooltip />
-          <Line yAxisId="right1" type="monotone" dataKey={kpis[0]} stroke={colors[0]} activeDot={{ r: 8 }} />
-          <Line yAxisId="right2" type="monotone" dataKey={kpis[1]} stroke={colors[1]} />
-          <Line yAxisId="left1" type="monotone" dataKey={kpis[2]} stroke={colors[2]} />
-          <Line yAxisId="left2" type="monotone" dataKey={kpis[3]} stroke={colors[3]} />
+
+          <Line yAxisId="right1" type="monotone" dataKey={kpis[0]} stroke={colors[0]}
+            dot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            activeDot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            onClick={onRightClick} />
+          <Line yAxisId="right2" type="monotone" dataKey={kpis[1]} stroke={colors[1]}
+            dot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            activeDot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            onClick={onRightClick} />
+          <Line yAxisId="left1" type="monotone" dataKey={kpis[2]} stroke={colors[2]}
+            dot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            activeDot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            onClick={onRightClick} />
+          <Line yAxisId="left2" type="monotone" dataKey={kpis[3]} stroke={colors[3]}
+            dot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            activeDot={showDot ? {strokeWidth: 1, r: 2} : {strokeWidth: 0, r: 0}}
+            onClick={onRightClick} />
         </LineChart>
       </ResponsiveContainer>
+
+      {
+      // <div onMouseLeave={() => {setContextMenuOpen(false)}}
+      //   className={'tree-menu ' + (contextMenuOpen ? 'open' : 'colse')}
+      //   style={{top: contextMenuY, left: contextMenuX}}>
+      //     <Button color="primary" type="submit">
+      //       <FontAwesomeIcon icon="plus" />
+      //     </Button>
+      //     <Button color="secondary" type="submit">
+      //       <FontAwesomeIcon icon="pencil-alt" />
+      //     </Button>
+      //     <Button color="danger" type="submit">
+      //       <FontAwesomeIcon icon="trash" />
+      //     </Button>
+      // </div>
+      }
     </>
   );
 };
