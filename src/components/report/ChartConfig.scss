@@ -1,0 +1,17 @@
+.site-dropdown {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  border: 1px solid rgb(62, 130, 247);
+  border-radius: 1px;
+  width: 150px;
+  text-align: center;
+  background-color: #dfe2e6;
+}
+
+.apply-button {
+    color: #dfe2e6;
+    background-color: rgb(62, 130, 247) !important;
+    border-color: rgb(62, 130, 247) !important;
+    margin: 100px 0;
+}

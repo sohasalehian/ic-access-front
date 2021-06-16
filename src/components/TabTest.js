@@ -93,7 +93,7 @@ class TabTest extends React.Component {
         <Button onClick={() => this.addItem('Roles')}>Roles</Button>
         <Button onClick={() => this.addItem('Reports')}>Reports</Button>
         <CloseableTabs
-          tabPanelColor='#dee2e6'
+          tabPanelColor='#dfe2e6'
           data={this.state.data}
           onCloseTab={(id, newIndex) => {
             this.setState({

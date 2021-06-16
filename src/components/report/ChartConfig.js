@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import DataService from "../../services/data.service";
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import "./ChartConfig.scss";
 
 const ChartConfig = (props) => {
   const [sites, setSites] = useState([]);
-  const [selectedSite, setSelectedSite] = useState(props.selectedSite ? props.selectedSite : "");
+  const [selectedSite, setSelectedSite] = useState("");
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
@@ -13,7 +14,6 @@ const ChartConfig = (props) => {
       setSites(res.data);
       if (selectedSite === "") {
         setSelectedSite(res.data[0]);
-        props.setSelectedSite(res.data[0]);
       }
 
       const menuItsms = [];
@@ -33,7 +33,10 @@ const ChartConfig = (props) => {
   const onSelectSite = (e) => {
     console.log("++++++++++++" + window.innerWidth);
     setSelectedSite(e.key);
-    props.setSelectedSite(e.key);
+  }
+
+  const onApply = (e) => {
+    props.setChartConfig({site: selectedSite});
   }
 
   return (
@@ -47,6 +50,9 @@ const ChartConfig = (props) => {
               {selectedSite} <DownOutlined />
             </a>
           </Dropdown>
+        </div>
+        <div onClick={onApply}>
+          <button onClick={onApply} className="apply-button btn btn-info">Apply</button>
         </div>
       </center>
     </>

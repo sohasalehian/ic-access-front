@@ -93,12 +93,12 @@ class Home extends React.Component {
       <div className="tab-container">
         <Button className="tab-opener" style={{left: '220px'}}
           onClick={() => this.addItem('Users')}>Users</Button>
-        <Button className="tab-opener" style={{left: '300px'}}
+        <Button className="tab-opener" style={{left: '310px'}}
           onClick={() => this.addItem('Roles')}>Roles</Button>
-        <Button className="tab-opener" style={{left: '380px'}}
+        <Button className="tab-opener" style={{left: '400px'}}
           onClick={() => this.addItem('Reports')}>Reports</Button>
         <CloseableTabs
-          tabPanelColor='#dee2e6'
+          tabPanelColor='#dfe2e6'
           data={this.state.data}
           onCloseTab={(id, newIndex) => {
             this.setState({
