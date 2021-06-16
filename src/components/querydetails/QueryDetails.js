@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import DataService from "../../services/data.service";
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import "./ChartConfig.scss";
+import "./QueryDetails.scss";
 
-const ChartConfig = (props) => {
+const QueryDetails = (props) => {
   const [sites, setSites] = useState([]);
   const [selectedSite, setSelectedSite] = useState("");
   const [menu, setMenu] = useState([]);
@@ -36,7 +36,7 @@ const ChartConfig = (props) => {
   }
 
   const onApply = (e) => {
-    props.setChartConfig({site: selectedSite});
+    props.setQueryDetails({site: selectedSite});
   }
 
   return (
@@ -59,4 +59,4 @@ const ChartConfig = (props) => {
   );
 };
 
-export default ChartConfig;
+export default QueryDetails;

@@ -12,8 +12,6 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ChartTest from './ChartTest';
-import RechartsLineChart from './RechartsLineChart';
-import ChartConfig from './ChartConfig';
 import ToggleButton from 'react-toggle-button';
 
 const { DirectoryTree } = Tree;

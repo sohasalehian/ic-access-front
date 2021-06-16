@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ChartTest from './ChartTest';
 import RechartsLineChart from '../chart/RechartsLineChart';
-import QueryDetails from '../querydetails/QueryDetails';
+import QueryDetails from '../queryDetails/QueryDetails';
 import ReportTree from './ReportTree';
 import SlideTool from '../util/SlideTool';
 import ToggleButton from 'react-toggle-button';
