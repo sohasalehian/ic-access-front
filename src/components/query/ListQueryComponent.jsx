@@ -11,11 +11,10 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ChartTest from './ChartTest';
 import RechartsLineChart from '../chart/RechartsLineChart';
-import QueryDetails from '../queryDetails/QueryDetails';
-import ReportTree from './ReportTree';
-import SlideTool from '../util/SlideTool';
+import QueryDetails from '../querydetails/QueryDetails';
+import ReportTree from '../report/ReportTree';
+import SingleSlideTool from '../util/singleslide/SingleSlideTool';
 import ToggleButton from 'react-toggle-button';
 
 const { DirectoryTree } = Tree;
@@ -24,7 +23,7 @@ const ListReportComponent = (props) => {
 
   const [showConfig, setShowConfig] = useState(false);
 
-  //used in SlideTool
+  //used in SingleSlideTool
   const [slideToLeft, setSlideToLeft] = useState(false);
 
   //used in ReportTree
@@ -45,7 +44,7 @@ const ListReportComponent = (props) => {
   return (
     <>
       <div className='main-tree-container'>
-        <SlideTool
+        <SingleSlideTool
           slideToLeft={slideToLeft}
           defaultLeft={
             <ReportTree

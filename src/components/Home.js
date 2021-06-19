@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import ListUserComponent from './user/ListUserComponent';
 import ListRoleComponent from './role/ListRoleComponent';
 import ListReportComponent from "./report/ListReportComponent";
+import ListQueryComponent from "./query/ListQueryComponent";
 
 class Home extends React.Component {
   state = {
@@ -30,10 +31,16 @@ class Home extends React.Component {
       //   component: <ListUserComponent />,
       //   id: 2,
       //   closeable: true
+      // },
+      // {
+      //   tab: 'Reports',
+      //   component: <ListReportComponent />,
+      //   id: 3,
+      //   closeable: true
       },
       {
-        tab: 'Reports',
-        component: <ListReportComponent />,
+        tab: 'Query',
+        component: <ListQueryComponent />,
         id: 1,
         closeable: true
       }
@@ -42,20 +49,10 @@ class Home extends React.Component {
   };
 
   addItem = (name) => {
-    if (name === 'Users') {
+    if (name === 'Users' || name === 'Roles' || name === 'Reports') {
       var __FOUND = this.state.data.find(function(tab, index) {
-      	if(tab.tab == 'Users')
+      	if(tab.tab === 'Users' || tab.tab === 'Roles' || tab.tab === 'Reports')
       		return true;
-      });
-      if (__FOUND) {
-        return;
-      }
-    }
-
-    if (name === 'Roles') {
-      var __FOUND = this.state.data.find(function(tab, index) {
-        if(tab.tab == 'Roles')
-          return true;
       });
       if (__FOUND) {
         return;
@@ -66,21 +63,23 @@ class Home extends React.Component {
     this.setState({
       data: this.state.data.concat({
         tab: name,
-        component: name === 'Reports' ? (
+        component:
+        name === 'Query' ? (
+          <ListQueryComponent />
+        ) : (
+        name === 'Reports' ? (
           <ListReportComponent />
         ) : (
-          name === 'Users' ? (
-            <ListUserComponent />
-          ) : (
-            name === 'Roles' ? (
-              <ListRoleComponent />
-            ) : (
-              <div>
-                Your new component data for {id.toString().substring(6, 10)}
-              </div>
-            )
-          )
-        ),
+        name === 'Users' ? (
+          <ListUserComponent />
+        ) : (
+        name === 'Roles' ? (
+          <ListRoleComponent />
+        ) : (
+          <div>
+            Your new component data for {id.toString().substring(6, 10)}
+          </div>
+        )))),
         id: id,
         closeable: true
       }),
@@ -97,6 +96,8 @@ class Home extends React.Component {
           onClick={() => this.addItem('Roles')}>Roles</Button>
         <Button className="tab-opener" style={{left: '400px'}}
           onClick={() => this.addItem('Reports')}>Reports</Button>
+        <Button className="tab-opener" style={{left: '490px'}}
+          onClick={() => this.addItem('Query')}>Query</Button>
         <CloseableTabs
           tabPanelColor='#dfe2e6'
           data={this.state.data}

@@ -1,9 +1,9 @@
 import React, { useReducer, useState } from "react";
-import "./SlideTool.scss";
+import "./SingleSlideTool.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-const SlideTool = (props) => {
+const SingleSlideTool = (props) => {
   const[isHover, toggleHover] = useReducer((isHover) => !isHover, false);
   const[isHoverSlider, toggleHoverSlider] = useReducer((isHoverSlider) => !isHoverSlider, false);
   const[isHoverButton, toggleHoverButton] = useReducer((isHoverButton) => !isHoverButton, false);
@@ -13,19 +13,21 @@ const SlideTool = (props) => {
   const toggleCloseLeft = () => {setCloseLeft(!closeLeft)}
 
   return (
-    <div className='main-slide-tool'>
+    <div className='main-single-slide-tool'>
       <div className={'hidden-slide ' + (closeLeft ? 'visible' : '')}
         onMouseEnter={toggleHoverSlider} onMouseLeave={toggleHoverSlider} />
 
       <div className={'left-slide ' + (closeLeft ? 'hide' : '')}
         onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
 
-        {slideLeft ? props.slideLeft : props.defaultLeft}
-
         <div className={'left-half-circle half-circle back-position '
               + (isHover ? '' : 'hide ')}
               onClick={toggleCloseLeft}>
           <FontAwesomeIcon icon="arrow-left" />
+        </div>
+
+        <div className='slider'>
+          {slideLeft ? props.slideLeft : props.defaultLeft}
         </div>
       </div>
 
@@ -51,4 +53,4 @@ const SlideTool = (props) => {
   );
 };
 
-export default SlideTool;
+export default SingleSlideTool;

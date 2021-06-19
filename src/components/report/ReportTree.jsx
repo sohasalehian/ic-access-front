@@ -11,7 +11,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ChartTest from './ChartTest';
 import ToggleButton from 'react-toggle-button';
 
 const { DirectoryTree } = Tree;
@@ -235,19 +234,6 @@ const ReportTree = (props) => {
     setIsModalVisible(false);
     form && form.reset();
   };
-
-  const isChartTest = () => {
-    const id = parseInt(selectedKeys[0].replace('user','').replace('report',''));
-    if (!id) {
-      return false;
-    }
-
-    if (id % 2 === 0) {
-      return false;
-    }
-
-    return true;
-  }
 
   const isInvalid = false;
   var form = '';
