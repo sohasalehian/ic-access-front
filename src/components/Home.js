@@ -35,7 +35,7 @@ class Home extends React.Component {
       // {
       //   tab: 'Reports',
       //   component: <ListReportComponent />,
-      //   id: 3,
+      //   id: 1,
       //   closeable: true
       },
       {

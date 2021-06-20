@@ -21,22 +21,13 @@ const { DirectoryTree } = Tree;
 
 const ListReportComponent = (props) => {
 
-  const [showConfig, setShowConfig] = useState(false);
-
   //used in SingleSlideTool
-  const [slideToLeft, setSlideToLeft] = useState(false);
 
   //used in ReportTree
   const [selectedNode, setSelectedNode] = useState({key: 'root', link:'ali'});
-  const [expandedKeys, setExpandedKeys] = useState(["root", "root"]);
 
   //used in QueryDetails
   const [queryDetails, setQueryDetails] = useState({});
-
-  const changeSelectedNode = (node) => {
-    setQueryDetails({});
-    setSelectedNode(node);
-  }
 
   const isInvalid = false;
   var form = '';
@@ -45,26 +36,13 @@ const ListReportComponent = (props) => {
     <>
       <div className='main-tree-container'>
         <SingleSlideTool
-          slideToLeft={slideToLeft}
-          defaultLeft={
-            <ReportTree
-            gotoConfig={() => {console.log("22222222222222");setSlideToLeft(true);}}
-            setSelectedNode={changeSelectedNode}
-            expandedKeys={expandedKeys} setExpandedKeys={setExpandedKeys} />
+          left={
+            <QueryDetails setQueryDetails={setQueryDetails} selectedNode={null}/>
           }
-          slideLeft={
-            <QueryDetails setQueryDetails={setQueryDetails} selectedNode={selectedNode}/>
-          }
-          deactiveSlide={!selectedNode.isLeaf}
-          right={
-            selectedNode.isLeaf ?
-              (Object.keys(queryDetails).length === 0 ?
-                <p>Apply Chart Configurations</p>
-              :
-                <RechartsLineChart queryDetails={queryDetails} />
-              )
-            :
-              <p>Select a Leaf</p>
+          right={Object.keys(queryDetails).length === 0 ?
+            <p>Apply Chart Configurations</p>
+          :
+            <RechartsLineChart queryDetails={queryDetails} />
           }
         />
       </div>

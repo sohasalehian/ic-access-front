@@ -7,7 +7,6 @@ const SingleSlideTool = (props) => {
   const[isHover, toggleHover] = useReducer((isHover) => !isHover, false);
   const[isHoverSlider, toggleHoverSlider] = useReducer((isHoverSlider) => !isHoverSlider, false);
   const[isHoverButton, toggleHoverButton] = useReducer((isHoverButton) => !isHoverButton, false);
-  const[slideLeft, setSlideLeft] = useState(props.slideToLeft);
   const[closeLeft, setCloseLeft] = useState(false);
 
   const toggleCloseLeft = () => {setCloseLeft(!closeLeft)}
@@ -27,23 +26,16 @@ const SingleSlideTool = (props) => {
         </div>
 
         <div className='slider'>
-          {slideLeft ? props.slideLeft : props.defaultLeft}
+          {props.left}
         </div>
       </div>
 
-      <div className={'right-half-circle half-circle default-position '
+      <div className={'right-half-circle half-circle open-position '
             + (isHoverButton || isHoverSlider ? '' : 'hide ')
-            + (props.deactiveDefault || closeLeft || slideLeft ? '' : 'disable')}
+            + (closeLeft ? '' : 'disabled')}
           onMouseEnter={toggleHoverButton} onMouseLeave={toggleHoverButton}
-          onClick={() => {setSlideLeft(false); setCloseLeft(false);}}>
-        <FontAwesomeIcon icon="folder-open" />
-      </div>
-      <div className={'right-half-circle half-circle slide-position '
-            + (isHoverButton || isHoverSlider ? '' : 'hide ')
-            + (props.deactiveSlide || (!closeLeft && slideLeft) ? 'disable' : '')}
-          onMouseEnter={toggleHoverButton} onMouseLeave={toggleHoverButton}
-          onClick={() => {setSlideLeft(true); setCloseLeft(false);}}>
-        <FontAwesomeIcon icon="cogs" />
+          onClick={() => {setCloseLeft(false);}}>
+        <FontAwesomeIcon icon="arrow-right" />
       </div>
 
       <div className={'right-component ' + (closeLeft ? 'full' : '')}>
