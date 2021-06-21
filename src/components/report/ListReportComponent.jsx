@@ -31,10 +31,10 @@ const ListReportComponent = (props) => {
   const [expandedKeys, setExpandedKeys] = useState(["root", "root"]);
 
   //used in QueryDetails
-  const [queryDetails, setQueryDetails] = useState({});
+  const [reportQueryDetails, setReportQueryDetails] = useState({});
 
   const changeSelectedNode = (node) => {
-    setQueryDetails({});
+    setReportQueryDetails({});
     setSelectedNode(node);
   }
 
@@ -53,15 +53,15 @@ const ListReportComponent = (props) => {
             expandedKeys={expandedKeys} setExpandedKeys={setExpandedKeys} />
           }
           slideLeft={
-            <QueryDetails setQueryDetails={setQueryDetails} selectedNode={selectedNode}/>
+            <QueryDetails setQueryDetails={setReportQueryDetails} selectedNode={selectedNode}/>
           }
           deactiveSlide={!selectedNode.isLeaf}
           right={
             selectedNode.isLeaf ?
-              (Object.keys(queryDetails).length === 0 ?
+              (Object.keys(reportQueryDetails).length === 0 ?
                 <p>Apply Chart Configurations</p>
               :
-                <RechartsLineChart queryDetails={queryDetails} />
+                <RechartsLineChart queryDetails={reportQueryDetails} />
               )
             :
               <p>Select a Leaf</p>

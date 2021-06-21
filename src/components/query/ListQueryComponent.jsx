@@ -24,7 +24,6 @@ const ListReportComponent = (props) => {
   //used in SingleSlideTool
 
   //used in ReportTree
-  const [selectedNode, setSelectedNode] = useState({key: 'root', link:'ali'});
 
   //used in QueryDetails
   const [queryDetails, setQueryDetails] = useState({});
