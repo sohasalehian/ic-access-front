@@ -33,8 +33,8 @@ const RechartsLineChart = (props) => {
   }, [data]);
 
   useEffect(() => {
-    console.log("-------------" + props.queryDetails.site);
-    DataService.getDataBySite(props.queryDetails.site).then((res) => {
+    console.log("-------------" + props.queryDetails.element);
+    DataService.getDataByConfig(props.queryDetails.element).then((res) => {
 
         var r = [];
         // var r = RandomColor.generateRandomColors(res.data.kpis.length);
@@ -44,7 +44,7 @@ const RechartsLineChart = (props) => {
         setKpis(res.data.kpis);
         setColors(r);
     });
-  }, [props.queryDetails.site]);
+  }, [props.queryDetails.element]);
 
   const onRightClick = (info) => {
     // console.log(info);

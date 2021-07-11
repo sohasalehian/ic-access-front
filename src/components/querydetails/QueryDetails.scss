@@ -1,17 +1,84 @@
-.site-dropdown {
+.element-collapse-custom-collapse {
+  padding: 0 3% 0 0;
+
+}
+.fix-height-100 {
+  height: 100px;
+}
+.flex-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  margin: 0 11%;
+}
+.each-detail {
   display: flex;
   justify-content: space-between;
-  padding: 0 5px;
-  border: 1px solid rgb(62, 130, 247);
+  align-items: center;
+  border: 1px solid #77787a;
   border-radius: 1px;
-  width: 150px;
   text-align: center;
   background-color: #dfe2e6;
+  padding: 5px;
+  margin: 5px 0;
+}
+.each-detail.column {
+  flex-direction: column;
+}
+.ant-dropdown-menu {
+  position: absolute;
 }
 
+.period-input {
+  margin: 0 5px;
+  text-align: center;
+}
+//START ---------------- to shrink time picker
+// .ant-picker-date-panel {
+//   width: 252px;
+//   .ant-picker-body {
+//     padding: 0;
+//   }
+// }
+// .ant-picker-time-panel {
+//   height: 210px;
+//   width: 100px;
+// }
+// .ant-picker-time-panel-column {
+//   width: 49px;
+//   height: 210px;
+// }
+// .ant-picker-header-view {
+//   content: "HH:mm"
+// }
+// .ant-picker-panel {
+//   border-right: 1px solid #f1f1f1 !important;
+// }
+// .ant-picker-content {
+//   height: 210px;
+// }
+//END ---------------- to shrink time picker
+
+.hours-btn-circle {
+  min-width: 20px !important;
+  height: 20px !important;
+  font-size: 12px !important;
+  line-height: 0 !important;
+}
+
+.interval-radio-button-wrapper {
+  label {
+    height: 25px !important;
+    line-height: 23px !important;
+    padding: 0 5px !important;
+  }
+}
 .apply-button {
     color: #dfe2e6;
     background-color: rgb(62, 130, 247) !important;
     border-color: rgb(62, 130, 247) !important;
-    margin: 100px 0;
+    margin: 5px 15%;
+    padding: .1rem !important;
+    width: 70%;
 }
