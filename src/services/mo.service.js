@@ -15,8 +15,13 @@ const getElements = (moEntity, moView) => {
   return axios.get(API_URL + 'mo-element?moEntity=' + moEntity + '&moView=' + moView, { headers: authHeader() });
 };
 
+const getKpis = (moEntity, moView) => {
+  return axios.get(API_URL + 'kpi?moEntity=' + moEntity + '&moView=' + moView, { headers: authHeader() });
+};
+
 export default {
   getAllMoEntities,
   getAllMoViews,
   getElements,
+  getKpis
 };

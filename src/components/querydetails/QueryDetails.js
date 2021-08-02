@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MoService from "../../services/mo.service";
-import { Menu, Dropdown, Collapse, Radio, DatePicker, Button, Input } from 'antd';
+import { Menu, Dropdown, Collapse, Radio, DatePicker, Button, Input, Select } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import "./QueryDetails.scss";
 import { SettingOutlined } from '@ant-design/icons';
@@ -9,6 +9,7 @@ import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 const { Panel } = Collapse;
+const { Option, OptGroup } = Select;
 
 const QueryDetails = (props) => {
   const [moEntities, setMoEntities] = useState([]);
@@ -22,6 +23,12 @@ const QueryDetails = (props) => {
   const [elements, setElements] = useState([]);
   const [selectedElement, setSelectedElement] = useState("");
   const [elementMenu, setElementMenu] = useState([]);
+  const [disableElementDropdown, setDisableElementDropdown] = useState(true);
+
+  const [kpis, setKpis] = useState([]);
+  const [selectedKpi, setSelectedKpi] = useState("");
+  const [kpiMenu, setKpiMenu] = useState([]);
+  const [disableKpiSelect, setDisableKpiSelect] = useState(true);
 
   const [timeInterval, setTimeInterval] = useState(0);
   const [timeOption, setTimeOption] = useState("absolute");
@@ -110,9 +117,40 @@ const QueryDetails = (props) => {
           </Menu>
         );
         setElementMenu(elementMenu);
+
+        setDisableElementDropdown(res.data.length === 0);
+      });
+
+      MoService.getKpis(selectedMoEntity, selectedMoView).then((res) => {
+        setKpis(res.data);
+        if (selectedKpi === "") {
+          setSelectedKpi(res.data[0]);
+        }
+
+        const kpiMenuItsms = [];
+        for (let kpi of res.data) {
+          kpiMenuItsms.push(<Option key={kpi}>{kpi}</Option>);
+        }
+
+        var kpiMenu = (
+          <Select onClick={(e) => {setSelectedKpi(e.key)}}
+            disabled={disableKpiSelect}
+            placeholder="Please select KPIs"
+            onChange={handleKpiSelect}
+            mode="multiple" showSearch>
+            {kpiMenuItsms}
+          </Select>
+        );
+        setKpiMenu(kpiMenu);
+
+        setDisableKpiSelect(false);
       });
     }
   }, [selectedMoEntity, selectedMoView]);
+
+  function handleKpiSelect(value) {
+    console.log(`selected ${value}`);
+  }
 
   const genExtra = () => (
     <SettingOutlined
@@ -178,8 +216,12 @@ const QueryDetails = (props) => {
           </div>
 
           <div className="each-detail">
-            {(selectedMoView !== null && selectedMoView !== "" ? selectedMoView.toLowerCase() : "element") + ": "}
-            <Dropdown overlay={elementMenu} trigger={['click']} placement="bottomCenter" arrow>
+            {(selectedMoView !== null && selectedMoView !== "" ?
+              (selectedMoView.charAt(0) + selectedMoView.substring(1).toLowerCase())
+              : "Element") + ": "}
+            <Dropdown overlay={elementMenu} trigger={['click']}
+              placement="bottomCenter" arrow
+              disabled={disableElementDropdown}>
               <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                 {selectedElement} <DownOutlined />
               </a>
@@ -188,7 +230,10 @@ const QueryDetails = (props) => {
         </Panel>
 
         <Panel header="KPI" key="2" extra={genExtra()}>
-          <p>Lorem ipsum</p>
+          <div className="each-detail">
+            KPIs:{" "}
+            {kpiMenu}
+          </div>
         </Panel>
 
         <Panel header="Time" key="3" extra={genExtra()}>
@@ -238,21 +283,23 @@ const QueryDetails = (props) => {
           }
           </div>
 
-          <div className="each-detail column">
-            Specific Hours:
-            <div>
-              {selectedSpecificHours.map((item, i)=>{
-                return (
-                  <Button className="hours-btn-circle"
-                    type={selectedSpecificHours[i] ? "primary" : "dashed"}
-                    shape="circle"
-                    onClick={() => {addToSpecificHours(i)}}>
-                    {i}
-                  </Button>
-                );
-               })}
+          {timeInterval < 4 &&
+            <div className="each-detail column">
+              Specific Hours:
+              <div>
+                {selectedSpecificHours.map((item, i)=>{
+                  return (
+                    <Button className="hours-btn-circle"
+                      type={selectedSpecificHours[i] ? "primary" : "dashed"}
+                      shape="circle"
+                      onClick={() => {addToSpecificHours(i)}}>
+                      {i}
+                    </Button>
+                  );
+                 })}
+              </div>
             </div>
-          </div>
+          }
         </Panel>
       </Collapse>
     </>
